@@ -16,11 +16,12 @@ describe('Persistent Node Chat Server', () => {
   beforeAll((done) => {
     dbConnection.connect();
 
-       const tablename = ''; // TODO: fill this out
+    const tablename = 'messages'; // TODO:✅ fill this out
 
     /* Empty the db table before all tests so that multiple tests
      * (or repeated runs of the tests)  will not fail when they should be passing
      * or vice versa */
+    console.log('truncate');
     dbConnection.query(`truncate ${tablename}`, done);
   }, 6500);
 
@@ -41,7 +42,7 @@ describe('Persistent Node Chat Server', () => {
       .then(() => {
         // Now if we look in the database, we should find the posted message there.
 
-        /* TODO: You might have to change this test to get all the data from
+        /* TODO:✅ You might have to change this test to get all the data from
          * your message table, since this is schema-dependent. */
         const queryString = 'SELECT * FROM messages';
         const queryArgs = [];
@@ -53,7 +54,7 @@ describe('Persistent Node Chat Server', () => {
           // Should have one result:
           expect(results.length).toEqual(1);
 
-          // TODO: If you don't have a column named text, change this test.
+          // TODO:✅ If you don't have a column named text, change this test.
           expect(results[0].text).toEqual(message);
           done();
         });
@@ -65,9 +66,9 @@ describe('Persistent Node Chat Server', () => {
 
   it('Should output all messages from the DB', (done) => {
     // Let's insert a message into the db
-       const queryString = '';
-       const queryArgs = [];
-    /* TODO: The exact query string and query args to use here
+    const queryString = 'SELECT * FROM messages';
+    const queryArgs = [];
+    /* TODO:✅ The exact query string and query args to use here
      * depend on the schema you design, so I'll leave them up to you. */
     dbConnection.query(queryString, queryArgs, (err) => {
       if (err) {
