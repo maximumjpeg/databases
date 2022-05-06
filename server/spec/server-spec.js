@@ -21,7 +21,7 @@ describe('Persistent Node Chat Server', () => {
     /* Empty the db table before all tests so that multiple tests
      * (or repeated runs of the tests)  will not fail when they should be passing
      * or vice versa */
-    dbConnection.query(`truncate ${tablename}`, done);
+    dbConnection.query(`truncate table ${tablename}`, done);
   }, 6500);
 
   afterAll(() => {
@@ -45,15 +45,13 @@ describe('Persistent Node Chat Server', () => {
          * your message table, since this is schema-dependent. */
         const queryString = 'SELECT * FROM messages';
         const queryArgs = [];
-        console.log('');
 
         dbConnection.query(queryString, queryArgs, (err, results) => {
           if (err) {
-            console.log('error', err);
+            console.log('Error with query call to db line 50', err);
             throw err;
           }
           // Should have one result:
-          console.log('Results in serverspec', results);
           expect(results.length).toEqual(1);
 
           // TODO:✅ If you don't have a column named text, change this test.
@@ -72,6 +70,10 @@ describe('Persistent Node Chat Server', () => {
     const queryArgs = [];
     /* TODO:✅ The exact query string and query args to use here
      * depend on the schema you design, so I'll leave them up to you. */
+    const username = 'Valjean';
+    const message = 'In mercy\'s name, three days is all I need.';
+    const roomname = 'Hello';
+
     dbConnection.query(queryString, queryArgs, (err) => {
       if (err) {
         throw err;
@@ -80,6 +82,7 @@ describe('Persistent Node Chat Server', () => {
       // Now query the Node chat server and see if it returns the message we just inserted:
       axios.get(`${API_URL}/messages`)
         .then((response) => {
+          console.log('line 82 server-spec, response data', response);
           const messageLog = response.data;
           expect(messageLog[0].text).toEqual(message);
           expect(messageLog[0].roomname).toEqual(roomname);
