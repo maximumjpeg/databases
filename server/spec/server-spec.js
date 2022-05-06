@@ -21,7 +21,6 @@ describe('Persistent Node Chat Server', () => {
     /* Empty the db table before all tests so that multiple tests
      * (or repeated runs of the tests)  will not fail when they should be passing
      * or vice versa */
-    console.log('truncate');
     dbConnection.query(`truncate ${tablename}`, done);
   }, 6500);
 
@@ -46,12 +45,15 @@ describe('Persistent Node Chat Server', () => {
          * your message table, since this is schema-dependent. */
         const queryString = 'SELECT * FROM messages';
         const queryArgs = [];
+        console.log('');
 
         dbConnection.query(queryString, queryArgs, (err, results) => {
           if (err) {
+            console.log('error', err);
             throw err;
           }
           // Should have one result:
+          console.log('Results in serverspec', results);
           expect(results.length).toEqual(1);
 
           // TODO:✅ If you don't have a column named text, change this test.
